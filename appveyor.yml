@@ -11,11 +11,11 @@ install:
   docker version
 build_script:
   - docker build -t solthoth/iis-chocolatey:latest .
-  - docker tag solthoth/iis-chocolatey:latest solthoth/iis-chocolatey:0.0.{build}
+  - ps: docker tag solthoth/iis-chocolatey:latest solthoth/iis-chocolatey:"$env:APPVEYOR_BUILD_VERSION"
 before_deploy:
   ps: docker login -u "$env:DOCKER_USER" -p "$env:DOCKER_PASS"
 deploy_script:
   - docker push solthoth/iis-chocolatey:latest
-  - docker push solthoth/iis-chocolatey:0.0.{build}
+  - ps: docker push solthoth/iis-chocolatey:"$env:APPVEYOR_BUILD_VERSION"
 after_deploy:
   docker logout
